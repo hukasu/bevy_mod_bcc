@@ -3,6 +3,8 @@
 //! Created by [Cem Yuksel](https://www.cemyuksel.com/research/yarnmodels/) for defining yarn-level cloth models.
 
 #[cfg(feature = "bevy")]
+pub mod mesh;
+#[cfg(feature = "bevy")]
 pub mod plugin;
 pub mod reader;
 

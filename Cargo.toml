@@ -5,11 +5,12 @@ edition = "2024"
 
 [features]
 default = ["bevy"]
-bevy = ["dep:bevy_app", "dep:bevy_asset", "dep:bevy_reflect"]
+bevy = ["dep:bevy_app", "dep:bevy_asset", "dep:bevy_mesh", "dep:bevy_reflect"]
 
 [dependencies]
 bevy_app = { version = "0.18.0-rc", optional = true }
 bevy_asset = { version = "0.18.0-rc", optional = true }
+bevy_mesh = { version = "0.18.0-rc", optional = true }
 bevy_reflect = { version = "0.18.0-rc", optional = true }
 
 futures-io = "0.3"
