@@ -1,0 +1,31 @@
+[package]
+name = "bevy_mod_bcc"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+default = ["bevy"]
+bevy = ["dep:bevy_app", "dep:bevy_asset", "dep:bevy_reflect"]
+
+[dependencies]
+bevy_app = { version = "0.18.0-rc", optional = true }
+bevy_asset = { version = "0.18.0-rc", optional = true }
+bevy_reflect = { version = "0.18.0-rc", optional = true }
+
+futures-io = "0.3"
+futures-lite = "2.6"
+
+log = "0.4"
+
+[dev-dependencies]
+bevy = { version = "0.18.0-rc", features = ["debug"] }
+
+[lints.rust]
+missing_docs = "warn"
+
+[lints.clippy]
+todo = "warn"
+unimplemented = "warn"
+dbg_macro = "warn"
+unwrap_used = "warn"
+missing_docs_in_private_items = "warn"
