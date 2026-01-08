@@ -88,9 +88,11 @@ impl MeshBuilder for BinaryCurveCollectionMeshBuilder<'_> {
 
             indices.extend(l..r);
             if *looping {
+                // Add first index to close the loop
                 indices.push(l);
             }
             if !last {
+                // Primitive restart
                 indices.push(u32::MAX);
             }
         }
