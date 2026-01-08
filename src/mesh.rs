@@ -21,7 +21,7 @@ impl BinaryCurveCollectionMeshBuilder<'_> {
         let Ok(vertices): Result<[f32; 3], _> = chunk.try_into() else {
             unreachable!("Chunk must contain 3 components.");
         };
-        [vertices[0], -vertices[2], vertices[1]]
+        vertices
     }
 
     /// Prepares a chunk into a value to be inserted into [`VertexAttributeValues`]
@@ -31,7 +31,7 @@ impl BinaryCurveCollectionMeshBuilder<'_> {
         let Ok(vertices): Result<[f32; 3], _> = chunk.try_into() else {
             unreachable!("Chunk must contain 3 components.");
         };
-        vertices
+        [vertices[0], -vertices[2], vertices[1]]
     }
 }
 
