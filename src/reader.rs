@@ -212,6 +212,8 @@ impl BinaryCurveCollection {
         }
         first_control_points[first_control_points.len() - 1] = previous_control_point_start;
 
+        debug_assert!(control_points.is_empty());
+
         Ok(())
     }
 
@@ -251,9 +253,11 @@ impl BinaryCurveCollection {
                     )
                 })
                 .await?;
-            control_points = &mut control_points[size..];
+            control_points = &mut control_points[(size * 3)..];
         }
         first_control_points[first_control_points.len() - 1] = previous_control_point_start;
+
+        debug_assert!(control_points.is_empty());
 
         Ok(())
     }
