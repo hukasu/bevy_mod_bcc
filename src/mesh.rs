@@ -14,6 +14,27 @@ pub struct BinaryCurveCollectionMeshBuilder<'a> {
     render_asset_usages: RenderAssetUsages,
 }
 
+impl BinaryCurveCollectionMeshBuilder<'_> {
+    /// Prepares a chunk into a value to be inserted into [`VertexAttributeValues`]
+    /// on a Y-up coordinate system
+    fn y_up(chunk: &[f32]) -> [f32; 3] {
+        let Ok(vertices): Result<[f32; 3], _> = chunk.try_into() else {
+            unreachable!("Chunk must contain 3 components.");
+        };
+        [vertices[0], -vertices[2], vertices[1]]
+    }
+
+    /// Prepares a chunk into a value to be inserted into [`VertexAttributeValues`]
+    /// on a Z-up coordinate system. This requires converting to Bevy's Y-up coordinate
+    /// system.
+    fn z_up(chunk: &[f32]) -> [f32; 3] {
+        let Ok(vertices): Result<[f32; 3], _> = chunk.try_into() else {
+            unreachable!("Chunk must contain 3 components.");
+        };
+        vertices
+    }
+}
+
 impl MeshBuilder for BinaryCurveCollectionMeshBuilder<'_> {
     fn build(&self) -> Mesh {
         let mut mesh = Mesh::new(PrimitiveTopology::LineStrip, self.render_asset_usages);
@@ -27,16 +48,16 @@ impl MeshBuilder for BinaryCurveCollectionMeshBuilder<'_> {
 
         let vertices = if self.bcc.header.dimensions == 3 {
             debug_assert_eq!(self.bcc.control_points.len() % 3, 0);
+            let mapper: fn(&[f32]) -> [f32; 3] = match self.bcc.header.up_direction {
+                1 => Self::y_up,
+                2 => Self::z_up,
+                _ => unreachable!("Invalid up direction."),
+            };
             let vertices = self
                 .bcc
                 .control_points
                 .chunks(3)
-                .map(|chunk| {
-                    let Ok(vertices): Result<[f32; 3], _> = chunk.try_into() else {
-                        unreachable!("Chunk must contain 3 components.");
-                    };
-                    [vertices[0], -vertices[2], vertices[1]]
-                })
+                .map(mapper)
                 .collect::<Vec<_>>();
             VertexAttributeValues::Float32x3(vertices)
         } else {
