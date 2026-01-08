@@ -64,18 +64,18 @@ impl MeshBuilder for BinaryCurveCollectionMeshBuilder<'_> {
             let Ok(l) = u32::try_from(*l) else {
                 panic!("Could not fit control points in indices list.");
             };
-            dbg!((l, r));
+
             indices.extend(l..r);
             if *looping {
                 indices.push(l);
             }
             if !last {
-                indices.push(dbg!(u32::MAX));
+                indices.push(u32::MAX);
             }
         }
 
-        // #[cfg(debug_assertions)]
-        // debug_assert_eq!(indices_capacity, indices.len());
+        #[cfg(debug_assertions)]
+        debug_assert_eq!(indices_capacity, indices.len());
 
         mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, vertices);
         mesh.insert_indices(bevy_mesh::Indices::U32(indices));
